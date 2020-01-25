@@ -1,0 +1,40 @@
+{
+	"name": "Aquatos",
+	"address": "",
+	"port": 10075,
+	"capacity": 200,
+	"log_level": "info",
+	"api": {
+		"url": "https://rac3.local/api",
+		"key": "00000000000000000000000000000000"
+	},
+	"max_login_attempts": 7,
+	"command_prefix": "/",
+	"eula": [
+		"None"
+	],
+	"announcements": [
+		"Welcome back players"
+	],
+	"operators": [
+		"hashsploit",
+		"Shanzenos",
+		"Foas"
+	],
+	"whitelist": {
+		"enabled": false,
+		"players": [
+			"hashsploit",
+			"Shanzenos",
+			"Foas"
+		]
+	},
+	"discord_webhooks": {
+		"login": "",
+		"logout": "",
+		"chat": "",
+		"create_game": "",
+		"create_clan": "",
+		"ban_log": ""
+	}
+}

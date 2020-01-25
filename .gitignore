@@ -1,0 +1,22 @@
+# Other files
+tmp/
+config/*
+!config/aquatos.json.example
+package-lock.json
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+.node_repl_history
+
+# Logs
+logs/
+fatal.txt
+*.bak
+*.log
+npm-debug.log*
+
+# Runtime
+pids
+*.pid
+*.seed
+*.pid.lock

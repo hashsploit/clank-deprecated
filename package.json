@@ -1,0 +1,43 @@
+{
+  "name": "clank",
+  "version": "0.1.0",
+  "description": "A Ratchet & Clank 3 Server Emulator",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "launch.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hashsploit/clank.git"
+  },
+  "keywords": [
+    "clank",
+    "ratchet",
+    "ratchet and clank",
+    "uya",
+    "ratchet and clank 3",
+    "up your arsenal",
+    "multiplayer",
+    "online",
+    "server",
+    "nodejs",
+    "javascript",
+    "emulator"
+  ],
+  "author": "hashsploit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hashsploit/clank/issues"
+  },
+  "homepage": "https://github.com/hashsploit/clank",
+  "dependencies": {
+    "aes-js": "^3.1.2",
+    "chalk": "^2.3.1",
+    "colors": "^1.1.2",
+    "node-rsa": "1.0.5",
+    "request": "^2.88.0",
+    "sync-request": "^6.0.0",
+    "threads": "^0.11.0"
+  }
+}
