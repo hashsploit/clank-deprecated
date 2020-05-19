@@ -4,21 +4,29 @@
 ----
 
 ## About
-This project is a Server Emulator for the PlayStation 2 game Ratchet & Clank 3
-to replace the original production server `ratchet3-prod1.pdonline.scea.com`.
+This project is a server emulator for the PlayStation 2/3 game
+Ratchet & Clank: Up Your Arsenal to replace the original production
+servers located at `ratchet3-prod1.pdonline.scea.com` for US and
+`randc3-master.online.scee.com` for EU.
+
+In order for clients to contact this server emulator you almost must have a
+DNS and DNAS server set-up that the PS2/PS3 can authenticate with.
+
+This server emulator is divided into 3 services:
+- The Medius Authentication Server (MAS) is where players initially login using
+  an existing profile and get a `session token` and `ip address` that is then
+  used to login to the Medius Lobby Server.
+- The Medius Lobby Server (MLS) is the main area where players reside when they
+  are not in game, chatting, looking for a game, managing clans, and looking
+  at stats.
 
 ----
 
 ## Features
-
-
-## Installation
-
-For high-performance it is recommend using **Debian Linux**. Other Linux based
-Operating Systems should work fine as well.
+- Implements Medius Authentication Server (MAS)
+- Implements Medius Lobby Server (MLS)
 
 ### Prerequisites
-- screen (4.06+)
 - nodejs (10.3+)
   - aes-js (3.1.2+)
   - chalk (2.3.1+)
@@ -29,7 +37,7 @@ Operating Systems should work fine as well.
   - threads (0.11.0+)
 - curl (7.52+)
 
-In order for clients to contact your server you need to have DNS server that can both forward traffic to a DNAS server (`gate1.us.dnas.playstation.org`) and to your server `ratchet3-prod1.pdonline.scea.com`. pfSense is good router software and can do both of these.
+See more [here](https://wiki.hashsploit.net).
 
 ### Setup
 1. Download or clone the project.

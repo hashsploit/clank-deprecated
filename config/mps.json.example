@@ -1,0 +1,25 @@
+{
+	"mode": "mls",
+	"address": "",
+	"port": 0,
+	"capacity": 200,
+	"log_level": "info",
+	"api": {
+		"url": "https://uyaonline.com/api/v1",
+		"key": "00000000000000000000000000000000"
+	},
+	"max_login_attempts": 7,
+	"death_messages": [
+		"%s destroyed %s."
+	],
+	"discord_webhooks": {
+		"start": "",
+		"shutdown": "",
+		"game_start": "",
+		"game_end": "",
+		"deaths": "",
+		"ctf_captures": "",
+		"node_captures": "",
+		"base_dmg": ""
+	}
+}

@@ -451,7 +451,7 @@ function finishLogin(penguin, id, buddies, permission, active, loginIP) {
 
 	let loginDate = new Date().getTime() / 1000;
 
-	
+
 }
 
 function handle_world(penguin, nick, login_key) {

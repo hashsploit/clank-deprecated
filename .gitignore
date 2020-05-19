@@ -1,7 +1,9 @@
 # Other files
 tmp/
 config/*
-!config/aquatos.json.example
+!config/mas.json.example
+!config/mls.json.example
+!config/mps.json.example
 package-lock.json
 yarn-debug.log*
 yarn-error.log*

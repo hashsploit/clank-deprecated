@@ -12,6 +12,4 @@ if [ ! -f "./config/$1.json" ]; then
 	exit 1
 fi
 
-screen -S clank-$1 -dmS nodejs server.js $1.json
-echo -e "$(tput bold)$(tput setaf 2)The server $1 started successfully.$(tput sgr0)"
-echo -e "Use screen -x clank-$1 to access the console."
+nodejs server.js $1.json

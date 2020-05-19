@@ -1,0 +1,27 @@
+{
+	"mode": "mas",
+	"address": "",
+	"port": 10075,
+	"capacity": 200,
+	"log_level": "info",
+	"api": {
+		"url": "https://uyaonline.com/api/v1",
+		"key": "00000000000000000000000000000000"
+	},
+	"max_login_attempts": 7,
+	"whitelist": {
+		"enabled": false,
+		"players": [
+			"hashsploit",
+			"Shanzenos",
+			"Foas"
+		]
+	},
+	"discord_webhooks": {
+		"start": "",
+		"shutdown": "",
+		"login_success": "",
+		"login_failure": "",
+		"ban": ""
+	}
+}

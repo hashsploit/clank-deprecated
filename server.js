@@ -10,7 +10,7 @@ global.name = "clank";
 global.version = "0.1.0";
 
 if (parameters.length < 3) {
-	console.error("Server configuration file must be specified e.g: \"nodejs server.js aquatos.json\" where aquatos.json is in /config/aquatos.json");
+	console.error("Server configuration file must be specified e.g: \"nodejs server.js mas.json\" where mas.json is in /config/mas.json");
 	process.exit(-1);
 }
 
@@ -19,11 +19,15 @@ let serverConfig = parameters[2];
 try {
 	global.config = require("./config/" + serverConfig);
 } catch (err) {
-	console.error("Server configuration file does not exist in /config/{0}".format(serverConfig));
+	console.error("Server configuration file does not exist in config/{0}".format(serverConfig));
 	process.exit(-1);
 }
 
 global.stopServer = function() {
+	WebhookEvent.emit('shutdown', {
+		"Type": "Shutdown initiated",
+		"Action": "Disconnecting players and shutting down ..."
+	});
 	network.disconnectAll(function() {
 		logger.log("warn", "Shutting down server ...");
 		process.exit(0);
