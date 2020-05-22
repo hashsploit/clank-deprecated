@@ -1,24 +1,27 @@
 ﻿var network = require('./network.js');
 var logger = require('./logger.js');
 
-function Player(socket) {
-	this.username;
-	this.socket = socket;
-	this.stage = 0; // Connection stage (before logged_in is set to true)
-	this.logged_in = false;
+function Player(client) {
+	this.client = client;
+	this.username = client.username;
 	this.operator = false;
 	this.muted = false;
 	this.clan = null;
 	this.buddies = {};
 	this.buddy_requests = {};
 	this.game = {
+		game_id: 0,
+		game_name: null,
+		game_password: null,
+		game_max_slots: 8,
+		game_weapons: {},
+		game_vehicles: true,
+		game_nodes: true,
+		game_mode: 0,
+		game_map: 0,
 		host: false,
-		// game_name: null,
-		// game_password: null,
-		// game_max_slots: 8,
-		// game_weapons: {},
-		// game_mode: 0,
-		// game_map: 0,
+		team: 0,
+		skin: 0,
 		in_game: false,
 		in_staging: false,
 		inventory: {},
@@ -57,16 +60,12 @@ function Player(socket) {
 
 	}
 
-	// Send raw bytes to client
-	this.send_data = function(data) {
-		network.send_data(this, data);
-	}
-
 	// Send packet to client
-	this.send = function(...arguments) {
-		var to_send = '%xt%' + arguments.join('%') + '%';
+	this.send = function(data) {
 
-		this.send_data(to_send);
+		// TODO: Process data
+
+		this.client.send(data);
 	}
 
 	this.addItem = function(itemId, cost = 0, showClient = true) {

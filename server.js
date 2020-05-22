@@ -78,10 +78,7 @@ logger.log("info", "Starting {0} v{1} (Ratchet & Clank 3 Server) ...".format(glo
 
 if (global.config.api.url) {
 	logger.log("debug", "Broadcasting server start ...".format(global.config.api.url));
-	api("/start");
-	HTTPEvent.emit(global.config.api.url + "/start", {
-		""
-	});
+	HTTPEvent.emit(global.config.api.url + "/start", null);
 }
 
 logger.log("info", "Server Mode: {0}".format(global.config.mode));

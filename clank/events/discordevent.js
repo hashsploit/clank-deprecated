@@ -1,7 +1,7 @@
 var logger = require('../logger.js');
 var EventEmitter = require('events');
 
-require('./post.js');
+require('./httpevent.js');
 
 /* Discord Webhook Service */
 

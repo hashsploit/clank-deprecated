@@ -1,19 +1,15 @@
 var logger = require('./logger.js');
 var packets = require('./packet.js');
-var player_class = require('./player.js');
-var room = require('./room.js');
+var Client = require('./client.js');
 var net = require('net');
-var event_emitter = require('events');
 var fs = require('fs');
+var EventEmitter = require('events');
 
 // Number of seconds before socket times out
 const SOCKET_TIMEOUT_SECONDS = 10;
 const SOCKET_TIMEOUT = 1000 * 60 * SOCKET_TIMEOUT_SECONDS;
 
-class pack_emitter extends event_emitter {}
-var packet_event = new pack_emitter;
-
-global.players = [];
+global.clients = [];
 
 function start(address, port) {
 	var server = net.createServer();
@@ -31,51 +27,53 @@ function onConnection(conn) {
 	conn.setEncoding("utf8");
 	conn.setNoDelay(true);
 
-	if ((players.length + 1) > global.config.capacity) {
+	if ((clients.length + 1) > global.config.capacity) {
 		// TODO: Send server full packet to client
 		conn.end();
 		conn.destroy();
-		logger.log("warn", "The server is full. Players: " + (players.length + 1));
+		logger.log("warn", "The server is full. Players: " + (clients.length + 1));
 		return;
 	}
 
-	let player = new player_class(conn);
+	let client = new Client(conn);
 
 	player.start();
-	players.push(player);
+	players.push(client);
 
-	player.ip_address = conn.remoteAddress;
-	player.port = conn.remotePort;
+	client.ip_address = conn.remoteAddress;
+	client.port = conn.remotePort;
 
 	conn.on('data', (data) => {
-		return on_data(player, data);
+		return onData(client, data);
 	});
 	conn.on('error', (error) => {
-		return on_error(player, error);
+		return onError(client, error);
 	});
 	conn.on('timeout', () => {
-		return on_timeout(player);
+		return onTimeout(client);
 	});
 	conn.once('close', () => {
-		return on_close(player);
+		return onClose(client);
 	});
 }
 
-function on_timeout(player) {
-	logger.log("warn", "Connection timeout: {0}:{1}".format(player.ip_address, player.port));
-	removePlayer(player);
+function onTimeout(client) {
+	logger.log("warn", "Connection timeout: {0}:{1}".format(client.ip_address, client.port));
+	disconnectClient(client);
 	return;
 }
 
-function on_data(player, data) {
-	var chunked_array = data.split('\0');
+function onData(player, data) {
+	//var chunked_array = data.split('\0');
+
+
 
 	if (data !== null && data !== "") {
 		try {
 			var buffer = new Buffer(data, 'binary'); // 'binary' 'hex' 'utf8'
 			//var raw_data = data.split('');
-			logger.log("debug", "recieved {0}:{1} > {2}".format(player.ip_address, player.port, buffer), 'magenta');
-			packets.decide(this, player, buffer);
+			logger.log("debug", "Recieved {0}:{1} > {2}".format(player.ip_address, player.port, buffer), 'magenta');
+			packets.decide(this, client, buffer);
 		} catch (error) {
 			logger.log("error", error);
 			removePlayer(player);
@@ -84,87 +82,79 @@ function on_data(player, data) {
 	}
 }
 
-function on_close(player) {
+function onClose(player) {
 	removePlayer(player);
 	return;
 }
 
-function on_error(player, error) {
+function onError(player, error) {
 	logger.log("error", "Socket error {0}:{1} > {2}".format(player.ip_address, player.port, error));
 	removePenguin(player);
 	return;
 }
 
-function send_data(player, data) {
-	if (!player.socket.destroyed) {
-		player.socket.write(data + "\0");
-		logger.log("debug", "sent {0}:{1} > {2}".format(data), 'magenta');
+function sendData(client, data) {
+	if (!client.socket.destroyed) {
+		client.socket.write(data);
+		logger.log("debug", "Sent {0}:{1} > {2}".format(data), 'magenta');
 	}
 }
 
 function disconnectAll(callback) {
-	if (Object.keys(penguinsById).length == 0) {
-		return callback();
-	}
-
-	for (var player in Object.keys(players)) {
-		let penguin = players[penguinId];
-
-		if (penguin !== undefined && penguin.joined) {
-			removePenguin(penguin);
+	if (clients.length == 0) {
+		if (typeof(callback) == 'function') {
+			return callback();
 		}
 	}
 
-	callback();
+	for (var clientId in Object.keys(clients)) {
+		let client = clients[clientId];
+
+		if (penguin !== undefined) {
+			disconnectClient(client);
+		}
+	}
+
+	if (typeof(callback) == 'function') {
+		return callback();
+	}
 }
 
-function removePlayer(player) {
+function disconnectClient(client) {
 	try {
+		// If the client exists in the clients array
+		if (clients.indexOf(client) >= 0) {
 
-		if (players.indexOf(player) >= 0) {
+			// If this client has passed basic authentication
+			if (client.authenticated) {
 
-			if (player.logged_in) {
+				// TODO: check if client is in active game/rooms
+				// gracefully remove from those lists.
 
-				if (player.room !== undefined) {
-					player.room.remove(penguin);
-				}
+				logger.log("info", "Player {0} ({1}:{2}) disconnected".format(client.username, client.ip_address, client.port), "yellow");
 
-				if (player.waddleId !== null) {
-					let waddleEmit = 'LeaveGame-' + roomByWaddle[penguin.waddleId];
-					WaddleEvent.emit(waddleEmit, penguin);
-				}
-
-				if (global.openGames[player.username] !== undefined) {
-					delete global.openGames[player.username];
-				}
-
-				logger.log("info", "{0} ({1}:{2}) disconnected".format(player.username, player.ip_address, player.port), "yellow");
-				api("/player/disconnect", {
-					username: player.username,
-					ip_address: player.ip_address,
-					port: player.port,
+				HTTPEvent.emit(global.config.api.url + "/player/disconnect", {
+					username: client.username,
+					ip_address: client.ip_address,
+					port: client.port
 				});
 			}
 
-			// If the player was in a game, remove the player from the game first
-			if (player.room !== undefined) {
-				player.room.remove(player);
-			}
-
+			// Remove from clients array
 			var index = players.indexOf(player);
-
 			players.splice(index, 1);
 
-			if (player.socket !== undefined) {
-				player.socket.end();
-				player.socket.destroy();
+			// Kill socket
+			if (client.socket !== undefined) {
+				client.socket.end();
+				client.socket.destroy();
 			}
 
 			logger.log("debug", "Disconnected > {0}:{1}".format(player.ip_address, player.port), 'cyan');
 		}
 
 	} catch(err) {
-		logger.log("error", "Failed to disconnect player: " + err);
+		logger.log("error", "Failed to disconnect client: " + err);
 	}
 }
 
