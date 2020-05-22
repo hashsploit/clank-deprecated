@@ -1,7 +1,6 @@
 let chalk = require("chalk");
 let logger = require('./clank/logger.js');
 let network = require('./clank/network.js');
-let packets = require('./clank/packet.js');
 let parameters = process.argv;
 
 require('./clank/util.js')();
@@ -25,14 +24,29 @@ try {
 
 global.stopServer = function() {
 	WebhookEvent.emit('shutdown', {
-		"Type": "Shutdown initiated",
-		"Action": "Disconnecting players and shutting down ..."
+		"Action": "{0} ({1}) shutting down".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+		"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+		"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
+		"_Capacity": global.config.capacity,
+		"Icon": "green"
 	});
 	network.disconnectAll(function() {
 		logger.log("warn", "Shutting down server ...");
 		process.exit(0);
 	});
 }
+
+global.serverModes = {
+	"mas": "Medius Authentication Server",
+	"mls": "Medius Lobby Server",
+	"mps": "Medius Proxy Server"
+};
+
+if (!(global.config.mode in global.serverModes)) {
+	console.error("Invalid server mode '{0}'! Type must be one of the following: {1}".format(Object.keys(global.serverModes).join(", ")));
+	process.exit(-1);
+}
+
 
 let logo = [
 	"_|_|_|  _|          _|_|    _|      _|  _|    _|",
@@ -47,11 +61,11 @@ let bolt = [
 "| \\/   \\/ |",
 "|_/\\___/\\_|",
 "  |\\ \\ \\|  ",
-"  | \\ \\ |  Name      : {0}".format(global.config.name),
+"  | \\ \\ |  Mode      : {0} ({1})".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
 "  |\\ \\ \\|  Address   : {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 "  | \\ \\ |  Capacity  : {0}".format(global.config.capacity),
 "  |\\ \\ \\|  Whitelist : {0}".format(global.config.whitelist.enabled ? "[" + global.config.whitelist.list.join(", ") + "]" : "Off"),
-"  | \\ \\ |  Operators : {0}".format(global.config.operators !== null ? "[" + global.config.operators.join(", ") + "]" : "None"),
+"  | \\ \\ |  Operators : {0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"),
 "  |\\ \\ \\|  ",
 "  '-----'  "
 ];
@@ -65,13 +79,26 @@ logger.log("info", "Starting {0} v{1} (Ratchet & Clank 3 Server) ...".format(glo
 if (global.config.api.url) {
 	logger.log("debug", "Broadcasting server start ...".format(global.config.api.url));
 	api("/start");
+	HTTPEvent.emit(global.config.api.url + "/start", {
+		""
+	});
 }
 
-logger.log("info", "Server Name: {0}".format(global.config.name));
+logger.log("info", "Server Mode: {0}".format(global.config.mode));
 logger.log("info", "Server Address: {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port));
 logger.log("info", "Server Capacity: {0}".format(global.config.capacity));
 logger.log("info", "Server Whitelist: {0}".format(global.config.whitelist.enabled ? "Enabled [" + global.config.whitelist.list.join(", ") + "]" : "Disabled"))
-logger.log("info", "Server Operators: {0}".format(global.config.operators !== null ? "[" + global.config.operators.join(", ") + "]" : "None"))
+logger.log("info", "Server Operators: {0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"))
 
 packets.start(true);
 network.start(global.config.address, global.config.port);
+
+WebhookEvent.emit('start', {
+	"Action": "{0} ({1}) started".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+	"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+	"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
+	"_Capacity": global.config.capacity,
+	"_Whitelist": "{0}".format(global.config.whitelist.enabled ? "[" + global.config.whitelist.list.join(", ") + "]" : "Off"),
+	"_Operators": "{0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"),
+	"Icon": "green"
+});

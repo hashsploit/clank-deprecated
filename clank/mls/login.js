@@ -1,11 +1,11 @@
-var network = require('./network.js');
-var logger = require('./logger.js');
+let network = require('./network.js');
+let logger = require('./logger.js');
 let packets = require('./packet.js');
-var room = require('./room.js');
-var events = require('events');
-var event_emitter = new events.EventEmitter();
+let room = require('./room.js');
+let events = require('events');
+let event_emitter = new events.EventEmitter();
 
-xml_handlers = {
+let handlers = {
 	'verChk': 'handle_version',
 	'rndK': 'handle_random',
 	'rcon': 'handle_rcon',
@@ -13,24 +13,22 @@ xml_handlers = {
 	'login': 'handle_login'
 }
 
-xmlListeners = [];
-
-loginAttempts = {};
-loginTimestamps = {};
-loginThrottle = {};
+let listeners = [];
+let loginAttempts = {};
+let loginTimestamps = {};
+let loginThrottle = {};
 
 function start(showLog) {
-	for (let handler in xml_handlers) {
+	for (let handler in handlers) {
 		try {
-			event_emitter.addListener(handler, this[xml_handlers[handler]]);
-			xmlListeners.push(handler);
+			event_emitter.addListener(handler, this[handlers[handler]]);
+			listeners.push(handler);
 		} catch(error) {
-			logger.log("error", "function " + xml_handlers[handler] + "() for " + handler + " does not exist!");
+			logger.log("error", "function " + handlers[handler] + "() for " + handler + " does not exist!");
 		}
 	}
 
-	let listeners = xmlListeners.length;
-	logger.log("debug", "Login::{0} XML Listener(s)".format(listeners), "cyan");
+	logger.log("debug", "Login::{0} XML Listener(s)".format(listeners.length), "cyan");
 }
 
 function handle(penguin, data) {

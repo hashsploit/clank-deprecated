@@ -1,11 +1,9 @@
 let chalk = require("chalk");
-let colors = require('colors');
 let currentLogLevel = 0;
 
 let level = {
 	"debug": {
 		"level": 0,
-		"color": "blue"
 	},
 	"info": {
 		"level": 1,

@@ -1,0 +1,20 @@
+{
+	"world": [
+			{"name": "settings", "directory": "./world/"},
+			{"name": "leaderboard", "directory": "./world/"},
+			{"name": "clan", "directory": "./world/"},
+			{"name": "buddy", "directory": "./world/"},
+			{"name": "mail", "directory": "./world/"},
+			{"name": "game", "directory": "./world/"},
+			{"name": "moderation", "directory": "./world/"},
+			{"name": "message", "directory": "./world/"},
+			{"name": "navigation", "directory": "./world/"},
+			{"name": "inventory", "directory": "./world/"},
+			{"name": "base", "directory": "./world/"},
+			{"name": "node", "directory": "./world/"}
+	],
+
+	"services": [
+			{"name": "discord", "extension": ".js"}
+	]
+}

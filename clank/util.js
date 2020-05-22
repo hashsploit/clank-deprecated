@@ -1,14 +1,14 @@
 let logger = require('./logger.js');
-let request = require("request");
 
 module.exports = function() {
 
+/*
 	global.api = function(endpoint, data) {
 		if (global.config.api.url) {
 			let options = {
 				json: true,
 				rejectUnauthorized: false,
-				insecure: true
+				insecure: global.config.log_level == "debug"
 			};
 			var query = "";
 			for (var key in data) {
@@ -25,22 +25,7 @@ module.exports = function() {
 			);
 		}
 	}
-
-	String.prototype.formatKey = function () {
-		let str = this.toString();
-
-		if (arguments.length) {
-			let t = typeof arguments[0];
-			let key;
-			let args = ("string" === t || "number" === t) ? Array.prototype.slice.call(arguments) : arguments[0];
-
-			for (key in args) {
-				str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
-			}
-		}
-
-		return str;
-	}
+*/
 
 	if (!String.prototype.format) {
 		String.prototype.format = function() {

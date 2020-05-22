@@ -39,7 +39,7 @@ function onConnection(conn) {
 		return;
 	}
 
-	let player = new player_class(conn, false);
+	let player = new player_class(conn);
 
 	player.start();
 	players.push(player);

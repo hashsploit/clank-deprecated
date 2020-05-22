@@ -23,7 +23,11 @@
     "server",
     "nodejs",
     "javascript",
-    "emulator"
+    "emulator",
+	"medius",
+	"mas",
+	"mls",
+	"mps"
   ],
   "author": "hashsploit",
   "license": "MIT",
@@ -34,10 +38,8 @@
   "dependencies": {
     "aes-js": "^3.1.2",
     "chalk": "^2.3.1",
-    "colors": "^1.1.2",
-    "node-rsa": "1.0.5",
-    "request": "^2.88.0",
-    "sync-request": "^6.0.0",
-    "threads": "^0.11.0"
+    "big-integer": "^1.6.48",
+    "node-rsa": "^1.0.8",
+    "then-request": "^6.0.2"
   }
 }

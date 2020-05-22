@@ -1,8 +1,6 @@
 # Clank
 ## A Ratchet & Clank 3 Server Emulator
 
-----
-
 ## About
 This project is a server emulator for the PlayStation 2/3 game
 Ratchet & Clank: Up Your Arsenal to replace the original production
@@ -16,11 +14,11 @@ This server emulator is divided into 3 services:
 - The Medius Authentication Server (MAS) is where players initially login using
   an existing profile and get a `session token` and `ip address` that is then
   used to login to the Medius Lobby Server.
-- The Medius Lobby Server (MLS) is the main area where players reside when they
-  are not in game, chatting, looking for a game, managing clans, and looking
-  at stats.
-
-----
+- The Medius Lobby Server (MLS) is where a majority of players reside when they
+  are not in game, chatting, looking for a game, managing clans, or looking at
+  stats.
+- The Medius Proxy Server (MPS) is where players are synchronized in-game before
+  DME (Distributed Memory Engine) takes place.
 
 ## Features
 - Implements Medius Authentication Server (MAS)
@@ -42,5 +40,5 @@ See more [here](https://wiki.hashsploit.net).
 ### Setup
 1. Download or clone the project.
 2. Run `npm i` in the directory of the project to install the required packages.
-3. Copy `config/aquatos.json.example` to `config/aquatos.json` and configure it.
-4. Run `./launch.sh aquatos` to start the `aquatos` server in a background screen process, or if you are debugging, you can manually run `nodejs --trace-warnings server.js aquatos.json`. You can access the background screen process by running `screen -x clank-aquatos`.
+3. Copy `config/mas.json.example` to `config/mas.json` and configure it.
+4. Run `./launch.sh mas` to start the `mas` server. If you are debugging, you can manually run `nodejs --trace-warnings server.js mas.json`.
