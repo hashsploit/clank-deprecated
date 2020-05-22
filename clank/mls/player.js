@@ -1,5 +1,5 @@
-﻿var network = require('./network.js');
 var logger = require('./logger.js');
+var network = require('./network.js');
 
 function Player(client) {
 	this.client = client;

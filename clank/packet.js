@@ -3,7 +3,8 @@ var network = require('./network.js');
 var handler = null;
 
 function start() {
-	handler = require('./mas/handler.js');
+	var Handler = require('./mas/handler.js');
+	handler = new Handler();
 
 	// If this is a MLS server use the MLS handler instead
 	if (global.config.mode == "mls") {

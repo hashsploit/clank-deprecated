@@ -1,6 +1,7 @@
 let chalk = require("chalk");
 let logger = require('./clank/logger.js');
 let network = require('./clank/network.js');
+var packets = require('./clank/packet.js');
 let parameters = process.argv;
 
 require('./clank/util.js')();
@@ -76,6 +77,9 @@ console.log(chalk["cyan"].bold(bolt.join("\n")) + "\n");
 logger.setLogLevel(global.config.log_level);
 logger.log("info", "Starting {0} v{1} (Ratchet & Clank 3 Server) ...".format(global.name, global.version), "cyan");
 
+require("./clank/events/httpevent.js");
+require("./clank/events/discordevent.js");
+
 if (global.config.api.url) {
 	logger.log("debug", "Broadcasting server start ...".format(global.config.api.url));
 	HTTPEvent.emit(global.config.api.url + "/start", null);
@@ -90,7 +94,7 @@ logger.log("info", "Server Operators: {0}".format(global.config.operators != nul
 packets.start(true);
 network.start(global.config.address, global.config.port);
 
-WebhookEvent.emit('start', {
+DiscordEvent.emit('start', {
 	"Action": "{0} ({1}) started".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
 	"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
 	"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),

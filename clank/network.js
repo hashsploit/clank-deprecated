@@ -64,13 +64,12 @@ function onTimeout(client) {
 }
 
 function onData(player, data) {
-	//var chunked_array = data.split('\0');
 
-
+	logger.log("debug", "Recieved {0}:{1} > {2}".format(player.ip_address, player.port, data), 'magenta');
 
 	if (data !== null && data !== "") {
 		try {
-			var buffer = new Buffer(data, 'binary'); // 'binary' 'hex' 'utf8'
+			var buffer = new Buffer(data, 'buffer'); // 'binary' 'hex' 'utf8'
 			//var raw_data = data.split('');
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(player.ip_address, player.port, buffer), 'magenta');
 			packets.decide(this, client, buffer);
@@ -82,14 +81,14 @@ function onData(player, data) {
 	}
 }
 
-function onClose(player) {
-	removePlayer(player);
+function onClose(client) {
+	removePlayer(client);
 	return;
 }
 
-function onError(player, error) {
-	logger.log("error", "Socket error {0}:{1} > {2}".format(player.ip_address, player.port, error));
-	removePenguin(player);
+function onError(client, error) {
+	logger.log("error", "Socket error {0}:{1} > {2}".format(client.ip_address, client.port, error));
+	disconnectClient(client);
 	return;
 }
 
@@ -159,8 +158,7 @@ function disconnectClient(client) {
 }
 
 module.exports.start = start;
-module.exports.send_data = send_data;
-module.exports.removePlayer = removePlayer;
-module.exports.players = players;
-module.exports.pack_emitter = pack_emitter;
+module.exports.sendData = sendData;
+module.exports.clients = clients;
+module.exports.disconnectClient = disconnectClient;
 module.exports.disconnectAll = disconnectAll;

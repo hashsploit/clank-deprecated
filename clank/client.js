@@ -7,7 +7,6 @@ function Client(socket) {
 	this.clientState = 0; // Connection stage (before logged_in is set to true)
 	this.operator = false;
 
-
 	this.start = function() {
 
 	}
