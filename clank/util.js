@@ -2,30 +2,38 @@ let logger = require('./logger.js');
 
 module.exports = function() {
 
-/*
 	global.api = function(endpoint, data) {
 		if (global.config.api.url) {
-			let options = {
-				json: true,
-				rejectUnauthorized: false,
-				insecure: global.config.log_level == "debug"
-			};
-			var query = "";
-			for (var key in data) {
-				query += "&{0}={1}".format(key, encodeURIComponent(data[key]));
-			}
-			logger.log("debug", "API request to {0}{1} ...".format(global.config.api.url, endpoint));
-			request.get("{0}{1}?key={2}{3}".format(global.config.api.url, endpoint, global.config.api.key, query), options,
-				function optionalCallback(err, httpResponse) {
-					if (err) {
-						logger.log("warn", "Failed to broadcast server start to the API!");
-						logger.log("warn", err);
-					}
-				}
-			);
+			HTTPEvent.emit("POST", global.config.api.url + endpoint, data);
 		}
+	};
+
+	global.bin2hex = function(binary) {
+		var hexdata = new Buffer(binary).toString('utf8');
+
+		var hex = new Buffer(data, 'binary'); // 'binary' 'hex' 'utf8'
+		var splitData = data.split('');
+
+		return hexdata;
+	};
+
+	global.logDataStream = function(data) {
+		// log the binary data stream in rows of 8 bits
+		var print = "";
+		for (var i = 0; i < data.length; i++) {
+			print += " " + data[i].toString(16);
+
+			// apply proper format for bits with value < 16, observed as int tuples
+			if (data[i] < 16) { print += "0"; }
+
+			// insert a line break after every 8th bit
+			if ((i + 1) % 8 === 0) {
+				print += '\n';
+			};
+		}
+
+		console.log(print);
 	}
-*/
 
 	if (!String.prototype.format) {
 		String.prototype.format = function() {

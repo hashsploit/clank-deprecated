@@ -10,11 +10,11 @@ if (global.config.log_level == "debug") {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
-HTTPEvent.on("PostRequest", (url, body, callback) => {
+HTTPEvent.on("POST", (url, body, callback) => {
 	try {
-		logger.log("debug", "HTTPRequest::PostRequest -> {0}".format(url));
+		logger.log("debug", "POST::Request -> {0}".format(url), "cyan");
 		request("POST", url, {json: body}).done((res) => {
-			logger.log("debug", "HTTPRequest::PostRequest <- {0}".format(url));
+			logger.log("debug", "POST::Response <- {0}".format(url), "cyan");
 			if (typeof(callback) == 'function') {
 				return callback(res);
 			}
@@ -24,11 +24,11 @@ HTTPEvent.on("PostRequest", (url, body, callback) => {
 	}
 });
 
-HTTPEvent.on("GetRequest", (url, callback) => {
+HTTPEvent.on("GET", (url, callback) => {
 	try {
-		logger.log("debug", "HTTPRequest::GetEvent -> {0}".format(url));
+		logger.log("debug", "GET::Request -> {0}".format(url), "cyan");
 		request("GET", url).done((res) => {
-			logger.log("debug", "HTTPRequest::GetEvent <- {0}".format(url));
+			logger.log("debug", "GET::Response <- {0}".format(url), "cyan");
 			if (typeof(callback) == 'function') {
 				return callback(res);
 			}

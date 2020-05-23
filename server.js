@@ -82,7 +82,7 @@ require("./clank/events/discordevent.js");
 
 if (global.config.api.url) {
 	logger.log("debug", "Broadcasting server start ...".format(global.config.api.url));
-	HTTPEvent.emit(global.config.api.url + "/start", null);
+	api("/start", global.config);
 }
 
 logger.log("info", "Server Mode: {0}".format(global.config.mode));

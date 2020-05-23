@@ -37,8 +37,8 @@ function onConnection(conn) {
 
 	let client = new Client(conn);
 
-	player.start();
-	players.push(client);
+	client.start();
+	clients.push(client);
 
 	client.ip_address = conn.remoteAddress;
 	client.port = conn.remotePort;
@@ -63,33 +63,37 @@ function onTimeout(client) {
 	return;
 }
 
-function onData(player, data) {
-
-	logger.log("debug", "Recieved {0}:{1} > {2}".format(player.ip_address, player.port, data), 'magenta');
-
+function onData(client, data) {
 	if (data !== null && data !== "") {
 		try {
-			var buffer = new Buffer(data, 'buffer'); // 'binary' 'hex' 'utf8'
-			//var raw_data = data.split('');
-			logger.log("debug", "Recieved {0}:{1} > {2}".format(player.ip_address, player.port, buffer), 'magenta');
-			packets.decide(this, client, buffer);
+			var buffer = Buffer.from(data);
+			//buffer.swap16();
+			console.log(buffer);
+
+			console.log(buffer.readUInt8(0).toString(16));
+
+			logDataStream(buffer);
+
+			var hex = "";
+			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
+
+
+			//packets.decide(this, client, buffer);
 		} catch (error) {
 			logger.log("error", error);
-			removePlayer(player);
+			disconnectClient(client);
 			return;
 		}
 	}
 }
 
 function onClose(client) {
-	removePlayer(client);
-	return;
+	disconnectClient(client);
 }
 
 function onError(client, error) {
 	logger.log("error", "Socket error {0}:{1} > {2}".format(client.ip_address, client.port, error));
 	disconnectClient(client);
-	return;
 }
 
 function sendData(client, data) {
@@ -109,7 +113,7 @@ function disconnectAll(callback) {
 	for (var clientId in Object.keys(clients)) {
 		let client = clients[clientId];
 
-		if (penguin !== undefined) {
+		if (client !== undefined) {
 			disconnectClient(client);
 		}
 	}
@@ -125,7 +129,7 @@ function disconnectClient(client) {
 		if (clients.indexOf(client) >= 0) {
 
 			// If this client has passed basic authentication
-			if (client.authenticated) {
+			if (client.clientState > 100) {
 
 				// TODO: check if client is in active game/rooms
 				// gracefully remove from those lists.
@@ -140,8 +144,8 @@ function disconnectClient(client) {
 			}
 
 			// Remove from clients array
-			var index = players.indexOf(player);
-			players.splice(index, 1);
+			var index = clients.indexOf(client);
+			clients.splice(index, 1);
 
 			// Kill socket
 			if (client.socket !== undefined) {
