@@ -153,7 +153,7 @@ function disconnectClient(client) {
 				client.socket.destroy();
 			}
 
-			logger.log("debug", "Disconnected > {0}:{1}".format(player.ip_address, player.port), 'cyan');
+			logger.log("debug", "Disconnected > {0}:{1}".format(client.ip_address, client.port), 'cyan');
 		}
 
 	} catch(err) {
