@@ -24,7 +24,7 @@ function onConnection(conn) {
 	logger.log("debug", "Incoming connection > {0}:{1}".format(conn.remoteAddress, conn.remotePort), 'cyan');
 
 	conn.setTimeout(SOCKET_TIMEOUT);
-	conn.setEncoding('binary');
+	//conn.setEncoding('binary');
 	conn.setNoDelay(true);
 
 	if ((clients.length + 1) > global.config.capacity) {
@@ -66,13 +66,51 @@ function onTimeout(client) {
 function onData(client, data) {
 	if (data !== null && data !== "") {
 		try {
-			var buffer = Buffer.from(data, 'utf8');
+			var buffer = Buffer.alloc(4096);
+			buffer.fill(data, 0, data.length, 'utf8');
+
+			//var buffer = Buffer.from(data, 'utf8');
+			//buffer.swap32();
 			console.log(buffer);
 			logDataStream(data);
 
-			var swapped = swap16(data);
-			console.log(swapped);
-			logDataStream(swapped);
+			var array = Int32Array.from(buffer);
+			console.log(array);
+			logDataStream(array);
+
+
+			var reverseEndian = [...array];
+			var index = 0;
+			var ret = 0;
+			var size = buffer.length;
+
+/*
+			while (index < size) {
+				var len = (reverseEndian[index + 1] | reverseEndian[index + 2] << 8);
+				if (buffer[index + 0] >= 0x80 && len > 0) {
+					len += 4;
+				}
+				var final = [];
+				try {
+					if (len > 0) {
+						//Array.Copy(reverseEndian, index + 3, final, 0, final.Length);
+						final = reverseEndian.slice(index + 3, 0);
+					}
+					console.log(data[index]);
+					console.log(len);
+					console.log(final);
+					//ret = component.HandleCommand(data[index + 0], len, final, client);
+				} catch (error) {
+					console.log(error);
+				}
+				index += len + 3;
+				if (ret == 1) {
+					break;
+				}
+			}
+*/
+
+
 
 			var hex = "";
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
