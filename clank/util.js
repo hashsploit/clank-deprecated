@@ -8,14 +8,19 @@ module.exports = function() {
 		}
 	};
 
-	global.bin2hex = function(binary) {
-		var hexdata = new Buffer(binary).toString('utf8');
+	global.prettyHex = function(binary) {
+		var data = binary.split('');
+		var output = "";
+		for (var i=0; i<data.length; i++) {
+			output = binary.charCodeAt(i) + " ";
+		}
 
-		var hex = new Buffer(data, 'binary'); // 'binary' 'hex' 'utf8'
-		var splitData = data.split('');
-
-		return hexdata;
+		return output.trim;
 	};
+
+	global.swap16 = function(data) {
+		return ((data & 0xFF) << 8) | ((data >> 8) & 0xFF);
+	}
 
 	global.logDataStream = function(data) {
 		// log the binary data stream in rows of 8 bits

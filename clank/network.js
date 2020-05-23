@@ -24,7 +24,7 @@ function onConnection(conn) {
 	logger.log("debug", "Incoming connection > {0}:{1}".format(conn.remoteAddress, conn.remotePort), 'cyan');
 
 	conn.setTimeout(SOCKET_TIMEOUT);
-	conn.setEncoding("utf8");
+	conn.setEncoding('binary');
 	conn.setNoDelay(true);
 
 	if ((clients.length + 1) > global.config.capacity) {
@@ -66,13 +66,13 @@ function onTimeout(client) {
 function onData(client, data) {
 	if (data !== null && data !== "") {
 		try {
-			var buffer = Buffer.from(data);
-			//buffer.swap16();
+			var buffer = Buffer.from(data, 'utf8');
 			console.log(buffer);
+			logDataStream(data);
 
-			console.log(buffer.readUInt8(0).toString(16));
-
-			logDataStream(buffer);
+			var swapped = swap16(data);
+			console.log(swapped);
+			logDataStream(swapped);
 
 			var hex = "";
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
