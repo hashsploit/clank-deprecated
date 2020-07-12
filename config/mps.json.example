@@ -1,15 +1,16 @@
 {
 	"mode": "mls",
 	"address": "",
-	"port": 0,
+	"port": 10078,
 	"capacity": 200,
+	"client_timeout": 45000,
 	"log_level": "info",
 	"api": {
 		"url": "https://uyaonline.com/api",
 		"key": "00000000000000000000000000000000"
 	},
 	"death_messages": [
-		"%s destroyed %s."
+		"%s killed %s."
 	],
 	"discord_webhooks": {
 		"start": "",
