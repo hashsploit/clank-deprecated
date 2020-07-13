@@ -1,6 +1,6 @@
 {
-  "name": "clank",
-  "version": "0.1.0",
+  "name": "Clank",
+  "version": "0.1.1",
   "description": "A Ratchet & Clank 3 Server Emulator",
   "main": "server.js",
   "scripts": {
