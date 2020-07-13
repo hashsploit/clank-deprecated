@@ -5,10 +5,6 @@ var net = require('net');
 var fs = require('fs');
 var EventEmitter = require('events');
 
-// Number of seconds before socket times out
-const SOCKET_TIMEOUT_SECONDS = 10;
-const SOCKET_TIMEOUT = 1000 * 60 * SOCKET_TIMEOUT_SECONDS;
-
 global.clients = [];
 
 function start(address, port) {
@@ -23,7 +19,7 @@ function start(address, port) {
 function onConnection(conn) {
 	logger.log("debug", "Incoming connection > {0}:{1}".format(conn.remoteAddress, conn.remotePort), 'cyan');
 
-	conn.setTimeout(SOCKET_TIMEOUT);
+	conn.setTimeout(global.config.client_timeout);
 	//conn.setEncoding('binary');
 	conn.setNoDelay(true);
 
@@ -116,11 +112,9 @@ function onData(client, data) {
 			}
 */
 
-
 			var hex = prettyHex(data);
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
 			packets.decide(this, client, buffer);
-
 
 
 		} catch (error) {

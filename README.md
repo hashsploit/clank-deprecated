@@ -38,7 +38,7 @@ Emulator features that are complete will be checked, features that are still in 
 - [ ] Configurable EULA screen.
 - [ ] Configurable Announcements screen.
 - [ ] Configurable death messages.
-- [ ] UYA Online API integration. 
+- [ ] UYA Online API integration.
 
 ### Prerequisites
 - nodejs (10.3+)
@@ -70,7 +70,7 @@ See the table below for a reference of the configuration JSON:
 | whitelist          | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled. |
 | discord_webhooks   | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.        |
 | command_prefix     | string  | **MLS Only:** A string prefix used to determine what in chat should be evaluated as a system command. |
-| client_timeout     | integer | **MPS Only:** A heart-beat timeout in seconds before a client is disconnected.      |
+| client_timeout     | integer | Time in milliseconds before a client is automatically disconnected without a heartbeat. |
 | death_messages     | array   | **MPS Only:** An array of death messages to be selected at random.                  |
 
 

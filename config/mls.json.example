@@ -3,6 +3,7 @@
 	"address": "",
 	"port": 10078,
 	"capacity": 200,
+	"client_timeout": 45000,
 	"log_level": "info",
 	"api": {
 		"url": "https://uyaonline.com/api",
