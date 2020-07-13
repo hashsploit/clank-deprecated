@@ -28,7 +28,7 @@ function onConnection(conn) {
 	conn.setNoDelay(true);
 
 	if ((clients.length + 1) > global.config.capacity) {
-		// TODO: Send server full packet to client
+		// TODO: Send "server full" packet to client
 		conn.end();
 		conn.destroy();
 		logger.log("warn", "The server is full. Players: " + (clients.length + 1));
@@ -65,20 +65,26 @@ function onTimeout(client) {
 
 function onData(client, data) {
 	if (data !== null && data !== "") {
+
+		// Data is bigger than 4096 bytes
+		if (data.length > 4096) {
+			disconnectClient(client);
+			return;
+		}
+
 		try {
-			var buffer = Buffer.alloc(4096);
+			var buffer = Buffer.alloc(data.length);
 			buffer.fill(data, 0, data.length, 'utf8');
 
-			//var buffer = Buffer.from(data, 'utf8');
-			//buffer.swap32();
-			console.log(buffer);
-			logDataStream(data);
+			//console.log(buffer);
+			//logDataStream(data);
 
 			var array = Int32Array.from(buffer);
-			console.log(array);
-			logDataStream(array);
+			//console.log(array);
+			//logDataStream(array);
 
 
+			// Handling splitting multiple Packet ID's on packets
 			var reverseEndian = [...array];
 			var index = 0;
 			var ret = 0;
@@ -111,12 +117,12 @@ function onData(client, data) {
 */
 
 
-
-			var hex = "";
+			var hex = prettyHex(data);
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
+			packets.decide(this, client, buffer);
 
 
-			//packets.decide(this, client, buffer);
+
 		} catch (error) {
 			logger.log("error", error);
 			disconnectClient(client);

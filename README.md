@@ -38,6 +38,7 @@ Emulator features that are complete will be checked, features that are still in 
 - [ ] Configurable EULA screen.
 - [ ] Configurable Announcements screen.
 - [ ] Configurable death messages.
+- [ ] UYA Online API integration. 
 
 ### Prerequisites
 - nodejs (10.3+)

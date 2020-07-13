@@ -8,14 +8,16 @@ module.exports = function() {
 		}
 	};
 
-	global.prettyHex = function(binary) {
-		var data = binary.split('');
+	global.prettyHex = function(data) {
 		var output = "";
 		for (var i=0; i<data.length; i++) {
-			output = binary.charCodeAt(i) + " ";
+			output += " " + data[i].toString(16);
+			if (data[i] < 16) {
+				output += "0";
+			}
 		}
 
-		return output.trim;
+		return output.trim();
 	};
 
 	global.swap16 = function(data) {
