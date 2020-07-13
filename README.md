@@ -1,5 +1,6 @@
-# Clank
-## A Ratchet & Clank 3 Server Emulator
+# Clank - A Ratchet & Clank 3 Server Emulator
+
+Built for [UYA Online](https://uyaonline.com/). Join our [Discord](https://discord.gg/mUQzqGu) server for updates.
 
 ## About
 This project is a server emulator for the PlayStation 2 / Playstation 3

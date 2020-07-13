@@ -69,6 +69,8 @@ function onData(client, data) {
 		}
 
 		try {
+			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, prettyHex(data)), 'magenta');
+
 			var buffer = Buffer.alloc(data.length);
 			buffer.fill(data, 0, data.length, 'utf8');
 
@@ -76,46 +78,33 @@ function onData(client, data) {
 			//logDataStream(data);
 
 			var array = Int32Array.from(buffer);
-			//console.log(array);
-			//logDataStream(array);
 
-
-			// Handling splitting multiple Packet ID's on packets
-			var reverseEndian = [...array];
+			// FIXME: Handling splitting multiple Packet ID's on packets
 			var index = 0;
-			var ret = 0;
 			var size = buffer.length;
 
-/*
 			while (index < size) {
-				var len = (reverseEndian[index + 1] | reverseEndian[index + 2] << 8);
-				if (buffer[index + 0] >= 0x80 && len > 0) {
-					len += 4;
+				var len = (array[index + 1] | array[index + 2] << 8);
+				if (array[index + 0] >= 0x80 && len > 0) {
+					len += 7;
 				}
 				var final = [];
 				try {
 					if (len > 0) {
-						//Array.Copy(reverseEndian, index + 3, final, 0, final.Length);
-						final = reverseEndian.slice(index + 3, 0);
+						//console.log("index: " + index + " len: " + len);
+						final = array.slice(index, len);
+						//console.log(final);
 					}
-					console.log(data[index]);
-					console.log(len);
-					console.log(final);
-					//ret = component.HandleCommand(data[index + 0], len, final, client);
+					var packetId = final[index + 0];
+					var packetLength = [final[index + 2] + final[index + 1]];
+					var packetChecksum = [final[index + 3], final[index + 4], final[index + 5], final[index + 6]];
+					//logger.log("debug", "Incoming DATA -> index:{0} id:{1} length:{2} checksum:{3} data:{4}".format(index+1, "0x" + packetId.toString(16), packetLength, prettyHex(packetChecksum), prettyHex(final)), "blue");
+					packets.decide(this, client, final);
 				} catch (error) {
-					console.log(error);
+					logger.log("error", "network.js Packet ID Splitting Error: {0}".format(error));
 				}
-				index += len + 3;
-				if (ret == 1) {
-					break;
-				}
+				index += len;
 			}
-*/
-
-			var hex = prettyHex(data);
-			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, hex), 'magenta');
-			packets.decide(this, client, buffer);
-
 
 		} catch (error) {
 			logger.log("error", error);

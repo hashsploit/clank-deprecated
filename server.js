@@ -6,8 +6,8 @@ let parameters = process.argv;
 
 require('./clank/util.js')();
 
-global.name = "clank";
-global.version = "0.1.0";
+global.name = "Clank";
+global.version = "0.1.1";
 
 if (parameters.length < 3) {
 	console.error("Server configuration file must be specified e.g: \"nodejs server.js mas.json\" where mas.json is in /config/mas.json");
