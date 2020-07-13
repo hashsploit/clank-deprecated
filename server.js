@@ -65,7 +65,7 @@ let bolt = [
 "  | \\ \\ |  Mode      : {0} ({1})".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
 "  |\\ \\ \\|  Address   : {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 "  | \\ \\ |  Capacity  : {0}".format(global.config.capacity),
-"  |\\ \\ \\|  Whitelist : {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.list.join(", ") + "]" : "Off"),
+"  |\\ \\ \\|  Whitelist : {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.players.join(", ") + "]" : "Off"),
 "  | \\ \\ |  Operators : {0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"),
 "  |\\ \\ \\|  ",
 "  '-----'  "
@@ -88,7 +88,7 @@ if (global.config.api.url) {
 logger.log("info", "Server Mode: {0}".format(global.config.mode));
 logger.log("info", "Server Address: {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port));
 logger.log("info", "Server Capacity: {0}".format(global.config.capacity));
-logger.log("info", "Server Whitelist: {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "Enabled [" + global.config.whitelist.list.join(", ") + "]" : "Disabled"))
+logger.log("info", "Server Whitelist: {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "Enabled [" + global.config.whitelist.players.join(", ") + "]" : "Disabled"))
 logger.log("info", "Server Operators: {0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"))
 
 packets.start(true);
@@ -99,7 +99,7 @@ DiscordEvent.emit('start', {
 	"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
 	"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 	"_Capacity": global.config.capacity,
-	"_Whitelist": "{0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.list.join(", ") + "]" : "Off"),
+	"_Whitelist": "{0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.players.join(", ") + "]" : "Off"),
 	"_Operators": "{0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"),
 	"Icon": "green"
 });
