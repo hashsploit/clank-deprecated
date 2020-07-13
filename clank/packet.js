@@ -3,46 +3,65 @@ var network = require('./network.js');
 var handler = null;
 
 function start() {
-	var Handler = require('./mas/handler.js');
-	handler = new Handler();
 
-	// If this is a MLS server use the MLS handler instead
-	if (global.config.mode == "mls") {
-		handler = require('./mls/handler.js');
-	}
-
-	handler.start();
 }
 
 function decide(socket, client, data) {
 
 	if (socket == undefined || socket.destroyed || data == null) {
+		disconnectClient(client);
 		return;
 	}
 
-	// TODO: Check if this is a valid packet (verify length and checksum?)
+	var parsedPacket = new Parser(data);
 
-	new Parser(data, {
-		client: client
-	});
+
 }
 
 class Parser {
-	constructor(rawPacket, world) {
-		this.rawPacket = rawPacket;
-		this.splitPacket = this.rawPacket.split();
-		this.id = this.splitPacket[0];
-		this.length = this.splitPacket[2] + this.splitPacket[1];
-		this.data = this.rawPacket.slice(3, this.rawPacket.length - 4)
-		this.checksum = this.splitPacket[4];
+
+	constructor(rawData) {
+		this.splitPacket = [...rawData];
+		this.p_id = this.splitPacket[0];
+		this.p_length = this.splitPacket[2] + this.splitPacket[1];
+		this.p_data = this.splitPacket.slice(1 + 2 + 4, this.splitPacket.length);
+		this.p_checksum = [];
+		this.p_checksum.push(this.splitPacket[3]);
+		this.p_checksum.push(this.splitPacket[4]);
+		this.p_checksum.push(this.splitPacket[5]);
+		this.p_checksum.push(this.splitPacket[6]);
+
+
 		this.isBadPacket = false;
 
-		logger.log("debug", "Incoming Packet -> id:{0} length:{1} checksum:{2} data:{3}".format(this.id, this.length, this.checksum, this.data), "cyan");
+		logger.log("debug", "Incoming Packet -> id:{0} length:{1} checksum:{2} data:{3}".format("0x" + this.p_id.toString(16), this.p_length, prettyHex(this.p_checksum), prettyHex(this.p_data)), "yellow");
+
+		// TODO: Check if this is a valid packet (verify length and checksum?)
 
 		if (!this.isBadPacket) {
-			world.worldConstruct.handle(world.player, rawPacket);
+
+			// Decrypt packet
+
+
+			// Process on the current emulation mode
+			switch (global.config.mode) {
+				case "mas":
+
+				break;
+
+				case "mls":
+
+				break;
+
+				case "mps":
+
+				break;
+			}
 		}
+
 	}
+
+
 }
 
 module.exports.start = start;

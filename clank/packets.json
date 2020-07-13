@@ -1,0 +1,22 @@
+[
+	{
+		"id": 0x01,
+		"name": "Graceful Disconnect",
+		"encrypted": true,
+	},
+	{
+		"id": 0x92,
+		"name": "RSA Login Request",
+		"encrypted": true,
+	},
+	{
+		"id": 0x93,
+		"name": "RSA Login Response",
+		"encrypted": true,
+	},
+	{
+		"id": 0x9c,
+		"name": "Server Message",
+		"encrypted": true,
+	},
+]
