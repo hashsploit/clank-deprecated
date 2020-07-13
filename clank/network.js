@@ -8,9 +8,13 @@ var EventEmitter = require('events');
 global.clients = [];
 
 function start(address, port) {
-	var server = net.createServer();
-
+	let server = net.createServer();
 	server.on('connection', onConnection);
+	server.on('error', (e) => {
+		logger.log("error", e);
+		process.exit(1);
+	})
+
 	server.listen(port, address);
 
 	logger.log("info", "Listening on {0}:{1}".format(address ? address : "*", port));

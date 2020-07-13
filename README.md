@@ -70,6 +70,7 @@ See the table below for a reference of the configuration JSON:
 | max_login_attempts | integer | **MAS Only:** Number of invalid login attempts made by a single player before being soft-banned.      |
 | whitelist          | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled.  |
 | discord_webhooks   | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.                          |
+| operators          | array   | **MLS Only:** An array of usernames of players that are server operators.                             |
 | command_prefix     | string  | **MLS Only:** A string prefix used to determine what in chat should be evaluated as a system command. |
 | eula               | array   | **MLS Only:** An array of strings to send to the client as the EULA message.                          |
 | announcements      | array   | **MLS Only:** An array of strings to send to the client on the Announcements page.                    |
