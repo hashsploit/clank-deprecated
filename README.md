@@ -59,20 +59,22 @@ This server can run in 3 emulation modes, **MAS**, **MLS** and **MPS**. You can 
 
 See the table below for a reference of the configuration JSON:
 
-| Name               | Type    | Description                                                                         |
-|--------------------|---------|-------------------------------------------------------------------------------------|
-| mode               | string  | One of the following: `mas`, `mls`, or `mps`.                                       |
-| address            | string  | Address the server should bind to. This can be set to an empty string for any.      |
-| port               | integer | Port that the server should listen on.                                              |
-| capacity           | integer | Maximum number of players this server can handle.                                   |
-| log_level          | string  | Controls logging verbosity. Either: `debug`, `info`, `warn` or `error`.             |
-| api                | object  | Details to hook into UYA Online's API. (this is equivalent to the MUM).             |
-| max_login_attempts | integer | **MAS Only:** Number of invalid login attempts made by a single player before being soft-banned.  |
-| whitelist          | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled. |
-| discord_webhooks   | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.        |
+| Name               | Type    | Description                                                                                           |
+|--------------------|---------|-------------------------------------------------------------------------------------------------------|
+| mode               | string  | One of the following: `mas`, `mls`, or `mps`.                                                         |
+| address            | string  | Address the server should bind to. This can be set to an empty string for any.                        |
+| port               | integer | Port that the server should listen on.                                                                |
+| capacity           | integer | Maximum number of players this server can handle.                                                     |
+| log_level          | string  | Controls logging verbosity. Either: `debug`, `info`, `warn` or `error`.                               |
+| api                | object  | Details to hook into UYA Online's API. (this is equivalent to the MUM).                               |
+| max_login_attempts | integer | **MAS Only:** Number of invalid login attempts made by a single player before being soft-banned.      |
+| whitelist          | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled.  |
+| discord_webhooks   | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.                          |
 | command_prefix     | string  | **MLS Only:** A string prefix used to determine what in chat should be evaluated as a system command. |
-| client_timeout     | integer | Time in milliseconds before a client is automatically disconnected without a heartbeat. |
-| death_messages     | array   | **MPS Only:** An array of death messages to be selected at random.                  |
+| eula               | array   | **MLS Only:** An array of strings to send to the client as the EULA message.                          |
+| announcements      | array   | **MLS Only:** An array of strings to send to the client on the Announcements page.                    |
+| client_timeout     | integer | Time in milliseconds before a client is automatically disconnected without a heartbeat.               |
+| death_messages     | array   | **MPS Only:** An array of death messages to be selected at random.                                    |
 
 
 ### MAS (Medius Authentication Server)
