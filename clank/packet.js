@@ -34,7 +34,7 @@ class Parser {
 
 		this.isBadPacket = false;
 
-		logger.log("debug", "Incoming Packet -> id:{0} length:{1} checksum:{2} data:{3}".format("0x" + this.p_id.toString(16), this.p_length, prettyHex(this.p_checksum), prettyHex(this.p_data)), "yellow");
+		logger.log("debug", "Incoming Packet -> id:{0} length:{1} checksum:{2} data:{3}".format("0x" + prettyHex([this.p_id]), this.p_length, prettyHex(this.p_checksum), prettyHex(this.p_data)), "yellow");
 
 		// TODO: Check if this is a valid packet (verify length and checksum?)
 

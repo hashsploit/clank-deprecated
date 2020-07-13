@@ -78,12 +78,9 @@ function onData(client, data) {
 			var buffer = Buffer.alloc(data.length);
 			buffer.fill(data, 0, data.length, 'utf8');
 
-			//console.log(buffer);
-			//logDataStream(data);
-
 			var array = Int32Array.from(buffer);
 
-			// FIXME: Handling splitting multiple Packet ID's on packets
+			// Handle splitting multiple Packet ID's on packets
 			var index = 0;
 			var size = buffer.length;
 
@@ -92,17 +89,8 @@ function onData(client, data) {
 				if (array[index + 0] >= 0x80 && len > 0) {
 					len += 7;
 				}
-				var final = [];
+				var final = array.slice(index, index+len);
 				try {
-					if (len > 0) {
-						//console.log("index: " + index + " len: " + len);
-						final = array.slice(index, len);
-						//console.log(final);
-					}
-					var packetId = final[index + 0];
-					var packetLength = [final[index + 2] + final[index + 1]];
-					var packetChecksum = [final[index + 3], final[index + 4], final[index + 5], final[index + 6]];
-					//logger.log("debug", "Incoming DATA -> index:{0} id:{1} length:{2} checksum:{3} data:{4}".format(index+1, "0x" + packetId.toString(16), packetLength, prettyHex(packetChecksum), prettyHex(final)), "blue");
 					packets.decide(this, client, final);
 				} catch (error) {
 					logger.log("error", "network.js Packet ID Splitting Error: {0}".format(error));
