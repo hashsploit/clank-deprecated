@@ -1,7 +1,7 @@
 var logger = require("../logger.js");
 
 const CipherContext = Object.freeze({
-	
+
 	"ID_00": 0x00,
 
 	"RC_SERVER_SESSION": 0x01,
@@ -19,4 +19,4 @@ const CipherContext = Object.freeze({
 	"RSA_AUTH": 0x07
 });
 
-module.exports.Parser = CipherContext;
+module.exports.CipherContext = CipherContext;
