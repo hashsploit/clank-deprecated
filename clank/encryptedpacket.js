@@ -15,7 +15,7 @@ class EncryptedPacket {
 		this.packetPayload = packetPayload;
 	}
 
-	this.decrypt = function() {
+	decrypt() {
 
 	}
 
