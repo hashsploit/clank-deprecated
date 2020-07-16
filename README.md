@@ -42,15 +42,15 @@ Emulator features that are complete will be checked, features that are still in 
 - [ ] UYA Online API integration.
 
 ### Prerequisites
+- curl (7.52+)
 - nodejs (10.3+)
-  - aes-js (3.1.2+)
+  - big-integer (1.6.48+),
   - chalk (2.3.1+)
   - colors (1.1.2+)
-  - node-rsa (1.0.5+),
   - request (2.88.0+)
+  - sha1 (1.1.1+)
   - sync-request (6.0.0+)
   - threads (0.11.0+)
-- curl (7.52+)
 
 
 ## Configuration
@@ -59,23 +59,26 @@ This server can run in 3 emulation modes, **MAS**, **MLS** and **MPS**. You can 
 
 See the table below for a reference of the configuration JSON:
 
-| Name               | Type    | Description                                                                                           |
-|--------------------|---------|-------------------------------------------------------------------------------------------------------|
-| mode               | string  | One of the following: `mas`, `mls`, or `mps`.                                                         |
-| address            | string  | Address the server should bind to. This can be set to an empty string for any.                        |
-| port               | integer | Port that the server should listen on.                                                                |
-| capacity           | integer | Maximum number of players this server can handle.                                                     |
-| log_level          | string  | Controls logging verbosity. Either: `debug`, `info`, `warn` or `error`.                               |
-| api                | object  | Details to hook into UYA Online's API. (this is equivalent to the MUM).                               |
-| max_login_attempts | integer | **MAS Only:** Number of invalid login attempts made by a single player before being soft-banned.      |
-| whitelist          | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled.  |
-| discord_webhooks   | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.                          |
-| operators          | array   | **MLS Only:** An array of usernames of players that are server operators.                             |
-| command_prefix     | string  | **MLS Only:** A string prefix used to determine what in chat should be evaluated as a system command. |
-| eula               | array   | **MLS Only:** An array of strings to send to the client as the EULA message.                          |
-| announcements      | array   | **MLS Only:** An array of strings to send to the client on the Announcements page.                    |
-| client_timeout     | integer | Time in milliseconds before a client is automatically disconnected without a heartbeat.               |
-| death_messages     | array   | **MPS Only:** An array of death messages to be selected at random.                                    |
+| Name                | Type    | Description                                                                                           |
+|---------------------|---------|-------------------------------------------------------------------------------------------------------|
+| mode                | string  | One of the following: `mas`, `mls`, or `mps`.                                                         |
+| address             | string  | Address the server should bind to. This can be set to an empty string for any.                        |
+| port                | integer | Port that the server should listen on.                                                                |
+| capacity            | integer | Maximum number of players this server can handle.                                                     |
+| log_level           | string  | Controls logging verbosity. Either: `debug`, `info`, `warn` or `error`.                               |
+| api                 | object  | Details to hook into UYA Online's API. (this is equivalent to the MUM).                               |
+| whitelist           | object  | Whitelisted player usernames for testing. All other players will be denied login if this is enabled.  |
+| discord_webhooks    | object  | JSON objects of WebHookable events that can be used to broadcast to Discord.                          |
+| client_timeout      | integer | Time in milliseconds before a client is automatically disconnected without a heartbeat.               |
+| max_login_attempts  | integer | **MAS Only:** Number of invalid login attempts made by a single player before being soft-banned.      |
+| mls_ip_address      | string  | **MAS Only:** Set this to the MLS's address. If it is null it will be auto-obtained.                  |
+| operators           | array   | **MLS Only:** An array of usernames of players that are server operators.                             |
+| command_prefix      | string  | **MLS Only:** A string prefix used to determine what in chat should be evaluated as a system command. |
+| eula                | array   | **MLS Only:** An array of strings to send to the client as the EULA message.                          |
+| announcements       | array   | **MLS Only:** An array of strings to send to the client on the Announcements page.                    |
+| death_messages      | array   | **MPS Only:** An array of death messages to be selected at random.                                    |
+| death_messages      | array   | **MPS Only:** An array of death messages to be selected at random.                                    |
+
 
 
 ### MAS (Medius Authentication Server)

@@ -12,4 +12,4 @@ if [ ! -f "./config/$1.json" ]; then
 	exit 1
 fi
 
-nodejs --use-strict server.js $1.json
+nodejs --use-strict --trace-warnings server.js $1.json debug

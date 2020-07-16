@@ -5,6 +5,7 @@
 	"capacity": 200,
 	"client_timeout": 45000,
 	"log_level": "info",
+	"mls_ip_address": "0.0.0.0",
 	"api": {
 		"url": "https://uyaonline.com/api",
 		"key": "00000000000000000000000000000000"
