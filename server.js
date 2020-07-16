@@ -1,7 +1,8 @@
+"use strict";
 let chalk = require("chalk");
 let logger = require('./clank/logger.js');
 let network = require('./clank/network.js');
-var packets = require('./clank/packet.js');
+let packets = require('./clank/packet.js');
 let parameters = process.argv;
 
 require('./clank/util.js')();
@@ -25,8 +26,8 @@ try {
 
 global.stopServer = function() {
 	WebhookEvent.emit('shutdown', {
-		"Action": "{0} ({1}) shutting down".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
-		"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+		"Action": "{0} ({1}) shutting down".format(global.config.mode.toUpperCase(), global.server_modes[global.config.mode]),
+		"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.server_modes[global.config.mode]),
 		"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 		"_Capacity": global.config.capacity,
 		"Icon": "green"
@@ -37,14 +38,14 @@ global.stopServer = function() {
 	});
 }
 
-global.serverModes = {
+global.server_modes = {
 	"mas": "Medius Authentication Server",
 	"mls": "Medius Lobby Server",
 	"mps": "Medius Proxy Server"
 };
 
-if (!(global.config.mode in global.serverModes)) {
-	console.error("Invalid server mode '{0}'! Type must be one of the following: {1}".format(Object.keys(global.serverModes).join(", ")));
+if (!(global.config.mode in global.server_modes)) {
+	console.error("Invalid server mode '{0}'! Type must be one of the following: {1}".format(Object.keys(global.server_modes).join(", ")));
 	process.exit(-1);
 }
 
@@ -62,7 +63,7 @@ let bolt = [
 "| \\/   \\/ |",
 "|_/\\___/\\_|",
 "  |\\ \\ \\|  ",
-"  | \\ \\ |  Mode      : {0} ({1})".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+"  | \\ \\ |  Mode      : {0} ({1})".format(global.config.mode.toUpperCase(), global.server_modes[global.config.mode]),
 "  |\\ \\ \\|  Address   : {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 "  | \\ \\ |  Capacity  : {0}".format(global.config.capacity),
 "  |\\ \\ \\|  Whitelist : {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.players.join(", ") + "]" : "Off"),
@@ -75,7 +76,7 @@ console.log(chalk["cyan"].bold(logo.join("\n")) + "\n");
 console.log(chalk["cyan"].bold(bolt.join("\n")) + "\n");
 
 logger.setLogLevel(global.config.log_level);
-logger.log("info", "Starting {0} v{1} (Ratchet & Clank 3 Server) ...".format(global.name, global.version), "cyan");
+logger.log("info", "Starting {0} v{1} ...".format(global.name, global.version), "cyan");
 
 require("./clank/events/httpevent.js");
 require("./clank/events/discordevent.js");
@@ -85,18 +86,14 @@ if (global.config.api.url) {
 	api("/start", global.config);
 }
 
-logger.log("info", "Server Mode: {0}".format(global.config.mode));
-logger.log("info", "Server Address: {0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port));
-logger.log("info", "Server Capacity: {0}".format(global.config.capacity));
-logger.log("info", "Server Whitelist: {0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "Enabled [" + global.config.whitelist.players.join(", ") + "]" : "Disabled"))
-logger.log("info", "Server Operators: {0}".format(global.config.operators != null ? "[" + global.config.operators.join(", ") + "]" : "None"))
+logger.log("info", "Emulating: {0} ({1})".format(global.config.mode, global.server_modes[global.config.mode]));
 
 packets.start(true);
 network.start(global.config.address, global.config.port);
 
 DiscordEvent.emit('start', {
-	"Action": "{0} ({1}) started".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
-	"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.serverModes[global.config.mode]),
+	"Action": "{0} ({1}) started".format(global.config.mode.toUpperCase(), global.server_modes[global.config.mode]),
+	"_Server Type": "{0}".format(global.config.mode.toUpperCase(), global.server_modes[global.config.mode]),
 	"_Address": "{0}:{1}".format((global.config.address ? global.config.address : "*"), global.config.port),
 	"_Capacity": global.config.capacity,
 	"_Whitelist": "{0}".format((global.config.whitelist != null && global.config.whitelist.enabled != null) ? "[" + global.config.whitelist.players.join(", ") + "]" : "Off"),

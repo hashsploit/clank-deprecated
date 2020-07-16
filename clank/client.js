@@ -1,5 +1,5 @@
-var logger = require('./logger.js');
-var network = require('./network.js');
+let logger = require('./logger.js');
+let network = require('./network.js');
 
 function Client(socket) {
 	this.socket = socket;

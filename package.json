@@ -25,6 +25,8 @@
     "javascript",
     "emulator",
     "medius",
+    "sce-rt",
+    "rtime",
     "mas",
     "mls",
     "mps"
@@ -36,10 +38,9 @@
   },
   "homepage": "https://github.com/hashsploit/clank",
   "dependencies": {
-    "aes-js": "^3.1.2",
-    "chalk": "^2.3.1",
     "big-integer": "^1.6.48",
-    "node-rsa": "^1.0.8",
+    "chalk": "^2.3.1",
+    "sha1": "^1.1.1",
     "then-request": "^6.0.2"
   }
 }

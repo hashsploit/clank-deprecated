@@ -24,22 +24,21 @@ module.exports = function() {
 		return ((data & 0xFF) << 8) | ((data >> 8) & 0xFF);
 	}
 
-	global.logDataStream = function(data) {
-		// log the binary data stream in rows of 8 bits
-		var print = "";
-		for (var i = 0; i < data.length; i++) {
-			print += " " + data[i].toString(16);
+	// Convert a hex string to a byte array
+	global.hexToBytes = function(hex) {
+		for (var bytes = [], c = 0; c < hex.length; c += 2)
+		bytes.push(parseInt(hex.substr(c, 2), 16));
+		return bytes;
+	}
 
-			// apply proper format for bits with value < 16, observed as int tuples
-			if (data[i] < 16) { print += "0"; }
-
-			// insert a line break after every 8th bit
-			if ((i + 1) % 8 === 0) {
-				print += '\n';
-			};
+	// Convert a byte array to a hex string
+	global.bytesToHex = function(bytes) {
+		for (var hex = [], i = 0; i < bytes.length; i++) {
+			var current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+			hex.push((current >>> 4).toString(16));
+			hex.push((current & 0xF).toString(16));
 		}
-
-		console.log(print);
+		return hex.join("");
 	}
 
 	if (!String.prototype.format) {

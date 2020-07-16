@@ -1,5 +1,5 @@
 var logger = require('./logger.js');
-var packets = require('./packet.js');
+var EncryptedPacket = require("./encryptedpacket.js");
 var Client = require('./client.js');
 var net = require('net');
 var fs = require('fs');
@@ -75,14 +75,14 @@ function onData(client, data) {
 		try {
 			logger.log("debug", "Recieved {0}:{1} > {2}".format(client.ip_address, client.port, prettyHex(data)), 'magenta');
 
-			var buffer = Buffer.alloc(data.length);
+			let buffer = Buffer.alloc(data.length);
 			buffer.fill(data, 0, data.length, 'utf8');
 
-			var array = Int32Array.from(buffer);
+			let array = Int32Array.from(buffer);
 
 			// Handle splitting multiple Packet ID's on packets
-			var index = 0;
-			var size = buffer.length;
+			let index = 0;
+			let size = buffer.length;
 
 			while (index < size) {
 				var len = (array[index + 1] | array[index + 2] << 8);
@@ -91,9 +91,21 @@ function onData(client, data) {
 				}
 				var final = array.slice(index, index+len);
 				try {
-					packets.decide(this, client, final);
+					let packetId = final[index + 0];
+					let packetLength = [final[index + 2] + final[index + 1]];
+					let packetChecksum = [final[index + 3], final[index + 4], final[index + 5], final[index + 6]];
+					let packetData = final.slice(7);
+					//packets.decide(this, client, final);
+					let packet = new EncryptedPacket(packetId, packetLength, packetChecksum, packetData);
+
+					// TODO: Check if packet is valid, otherwise disconnect client
+
+					// TODO: Decrypt packet
+
+					// TODO: Depending on which mode is enabled process packet on that mode handler
+
 				} catch (error) {
-					logger.log("error", "network.js Packet ID Splitting Error: {0}".format(error));
+					logger.log("error", "Error processing packet: {0}".format(error));
 				}
 				index += len;
 			}
