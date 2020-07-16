@@ -1,5 +1,15 @@
-var logger = require("../logger.js");
-var CipherContext = require("ciphercontext.js")
-var EventEmitter = require("events");
+let logger = require("./logger.js");
+let bigInt = require("big-integer");
 
-let ciphercontext = null;
+class RSA {
+
+	constructor(n, e, d) {
+		this.n = bigInt(n);
+		this.e = bigInt(e);
+		this.d = bigInt(d);
+	}
+
+
+}
+
+module.exports = RSA;
